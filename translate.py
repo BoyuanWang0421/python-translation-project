@@ -49,20 +49,22 @@ def get_all_translations(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence`, an empty list is
     returned.
     """
-    if rna_sequence:
-        seq=rna_sequence.upper()
-        trans=[]
-        remain=len(seq)%3
-        start_code='AUG'   
-        start_sit=re.search(start_code, rna_sequence)
-        for sit in range(0,(len(seq)-remain),3):
-            if sit=='AUG':
-                for i in range (sit.end(),(len(seq)-remain),3):     
-                    codon=genetic_code[seq[i:i+3]]
-                    trans.append(coden)     
-            else:
-                return [] 
-        return trans
+    rna_sequence = rna_sequence.upper()
+    number_of_bases = len(rna_sequence)
+    last_codon_index = number_of_bases - 3
+    if last_codon_index < 0:
+        return []
+    amino_acid_seq_list = []
+    for base_index in range(last_codon_index + 1):
+        codon = rna_sequence[base_index: base_index + 3]
+        if codon == "AUG":
+            aa_seq = translate_sequence(
+                    rna_sequence = rna_sequence[base_index:],
+                    genetic_code = genetic_code)
+            if aa_seq:
+                amino_acid_seq_list.append(aa_seq)
+    return amino_acid_seq_list 
+
 
 def get_reverse(sequence):
     """Reverse orientation of `sequence`.
