@@ -204,7 +204,9 @@ def find_first_orf(sequence,
     # exactly. Change `orf_pattern_str` so that it will match any open reading
     # frame.
     # Read the docstring above for additional clues.
-    orf_pattern_str = r'(' + '|'.join(start_codons) + ')([AUGC]{3})*(' + '|'.join(stop_codons) + ')
+    start = "|".join(start_codons)
+    stop = "|".join(stop_codons)
+    orf_pattern_str = '(?:'+start+')(?:[AUGC]{3})*(?:'+stop+')'
     ##########################################################################
 
     # Create the regular expression object
